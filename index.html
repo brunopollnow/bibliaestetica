@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bíblia de Objeções — Clínica de Estética</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A96E;
+    --gold-light: #E8D5B0;
+    --gold-dark: #8B6914;
+    --cream: #FAF6F0;
+    --dark: #1A1410;
+    --dark-mid: #2D2419;
+    --muted: #6B5B45;
+    --rose: #C4736A;
+    --sage: #7A9E7E;
+    --card-bg: #FDF9F4;
+    --border: rgba(201,169,110,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--dark);
+    padding: 48px 32px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-ornament {
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    letter-spacing: 1px;
+  }
+
+  header h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .header-sub {
+    margin-top: 14px;
+    color: rgba(250,246,240,0.45);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  .gold-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
+  }
+
+  /* MAIN LAYOUT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* SEARCH + FILTER */
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .search-wrap {
+    position: relative;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    padding: 18px 24px 18px 56px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    letter-spacing: 0.3px;
+  }
+
+  .search-wrap input::placeholder { color: rgba(107,91,69,0.45); }
+  .search-wrap input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,169,110,0.1);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 18px;
+    pointer-events: none;
+  }
+
+  .categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .cat-btn {
+    padding: 9px 20px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: transparent;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .cat-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold-dark);
+    background: rgba(201,169,110,0.06);
+  }
+
+  .cat-btn.active {
+    background: var(--dark);
+    border-color: var(--dark);
+    color: var(--gold);
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    padding: 0 4px;
+  }
+
+  .stats-count {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--gold-dark);
+  }
+
+  .stats-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 4px;
+  }
+
+  /* OBJECTION CARDS */
+  .cards-grid {
+    display: grid;
+    gap: 20px;
+  }
+
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    cursor: pointer;
+    animation: fadeSlide 0.4s ease both;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(26,20,16,0.08), 0 2px 8px rgba(201,169,110,0.12);
+    border-color: rgba(201,169,110,0.5);
+  }
+
+  .card-header {
+    padding: 22px 26px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+
+  .card.open .card-header {
+    border-color: var(--border);
+  }
+
+  .card-tag {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .tag-preco   { background: rgba(196,115,106,0.12); color: var(--rose); }
+  .tag-medo    { background: rgba(122,158,126,0.12); color: var(--sage); }
+  .tag-tempo   { background: rgba(201,169,110,0.15); color: var(--gold-dark); }
+  .tag-duvida  { background: rgba(107,91,69,0.1);    color: var(--muted); }
+  .tag-comparacao { background: rgba(26,20,16,0.07); color: var(--dark-mid); }
+  .tag-resultado  { background: rgba(196,115,106,0.12); color: var(--rose); }
+
+  .card-objection {
+    flex: 1;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--dark);
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  .card-chevron {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    margin-top: 2px;
+    color: var(--gold);
+    font-size: 13px;
+  }
+
+  .card.open .card-chevron {
+    background: var(--dark);
+    border-color: var(--dark);
+    color: var(--gold);
+    transform: rotate(180deg);
+  }
+
+  /* CARD BODY */
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card.open .card-body {
+    max-height: 1200px;
+  }
+
+  .card-inner {
+    padding: 24px 26px 28px;
+  }
+
+  .section-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* PSYCHOLOGY */
+  .psychology-box {
+    background: linear-gradient(135deg, rgba(26,20,16,0.03), rgba(201,169,110,0.05));
+    border: 1px solid rgba(201,169,110,0.2);
+    border-radius: 4px;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .psychology-box strong {
+    color: var(--dark-mid);
+    font-weight: 500;
+  }
+
+  /* SCRIPTS */
+  .scripts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .script-item {
+    position: relative;
+    padding: 16px 18px 16px 44px;
+    background: var(--card-bg);
+    border-radius: 4px;
+    border-left: 3px solid var(--gold);
+    font-size: 13.5px;
+    color: var(--dark);
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  .script-item .script-num {
+    position: absolute;
+    left: 14px;
+    top: 18px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .script-item em {
+    color: var(--gold-dark);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* TIPS */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .tip-item {
+    padding: 14px 16px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  /* EMPTY */
+  .empty {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    display: none;
+  }
+
+  .empty-icon { font-size: 32px; margin-bottom: 14px; opacity: 0.4; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+    color: rgba(107,91,69,0.5);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .tips-grid { grid-template-columns: 1fr; }
+    .card-objection { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">✦ Manual de Conversão ✦</div>
+  <h1>Bíblia de <em>Objeções</em><br>Clínica de Estética</h1>
+  <p class="header-sub">Scripts · Psicologia · Técnicas de Fechamento</p>
+  <div class="gold-line"></div>
+</header>
+
+<div class="container">
+
+  <div class="controls">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Buscar objeção (ex: caro, não tenho tempo, preciso pensar...)" oninput="filterCards()">
+    </div>
+    <div class="categories" id="categoryBtns">
+      <button class="cat-btn active" onclick="setCategory('all', this)">Todas</button>
+      <button class="cat-btn" onclick="setCategory('preco', this)">💰 Preço</button>
+      <button class="cat-btn" onclick="setCategory('medo', this)">😰 Medo / Dor</button>
+      <button class="cat-btn" onclick="setCategory('tempo', this)">⏳ Tempo</button>
+      <button class="cat-btn" onclick="setCategory('duvida', this)">🤔 Dúvida / Desconfiança</button>
+      <button class="cat-btn" onclick="setCategory('comparacao', this)">↔️ Comparação</button>
+      <button class="cat-btn" onclick="setCategory('resultado', this)">🎯 Resultado</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div>
+      <div class="stats-count" id="statsCount">0</div>
+      <div class="stats-label">objeções encontradas</div>
+    </div>
+  </div>
+
+  <div class="cards-grid" id="cardsGrid"></div>
+  <div class="empty" id="emptyState">
+    <div class="empty-icon">🌸</div>
+    Nenhuma objeção encontrada. Tente outro termo.
+  </div>
+
+</div>
+
+<footer>© Bíblia de Objeções — Clínica de Estética &nbsp;·&nbsp; Uso interno da equipe de vendas</footer>
+
+<script>
+const OBJECTIONS = [
+  // ——— PREÇO ———
+  {
+    id: 1,
+    category: 'preco',
+    tag: 'preco',
+    tagLabel: 'Preço',
+    objection: '"Está muito caro. Não tenho esse dinheiro agora."',
+    psychology: '<strong>O que está por trás:</strong> O cliente não vê o valor proporcional ao preço. A objeção de preço raramente é sobre dinheiro — é sobre percepção de valor. Ele pode gastar com outras coisas; só ainda não enxergou por que deveria investir aqui.',
+    scripts: [
+      'Entendo, e quero te ajudar a viabilizar isso. Me conta: o que te fez considerar este procedimento hoje? <em>(ouça e ancore no problema dele)</em> — Com esse motivo em mente, se não fosse o valor, você faria? <em>(se sim, leve para parcelamento)</em>',
+      '"Caro comparado a quê?" — Se compararmos com quanto você já gastou em produtos que não resolveram, esse procedimento sai bem mais barato. E aqui você tem resultado garantido, com profissional especializado.',
+      '"Posso te mostrar como cabe no seu orçamento. Temos [X]x sem juros. Fica menos do que [comparação do dia a dia: café por dia, jantar fora, etc.] por mês. Faz sentido assim?"',
+    ],
+    tips: [
+      'Nunca peça desculpa pelo preço — quem pede desconto antes do cliente é quem desvaloriza o serviço.',
+      'Use ancoragem: mencione o valor total do problema não tratado antes de falar o preço.',
+      'Ofereça parcelamento DEPOIS de justificar o valor, nunca antes.',
+    ]
+  },
+  {
+    id: 2,
+    category: 'preco',
+    tag: 'preco',
+    tagLabel: 'Preço',
+    objection: '"Achei mais barato em outra clínica."',
+    psychology: '<strong>O que está por trás:</strong> O cliente não percebe a diferença entre uma clínica e outra. Ele está comprando por preço porque não foi educado a comprar por valor. Sua missão é criar diferenciação clara.',
+    scripts: [
+      '"Que ótimo que você pesquisou! Posso te perguntar o que incluía esse orçamento? Muitas vezes a diferença está na quantidade de sessões, no equipamento utilizado ou no protocolo. Deixa eu te mostrar o que a gente entrega…"',
+      '"Entendo — à primeira vista o preço pode parecer diferente. Mas você já foi na outra clínica? Quero que você compare não só o preço, mas a estrutura, o equipamento, os resultados reais de pacientes. Posso te mostrar casos aqui?"',
+      '"Pense assim: se o procedimento não der resultado, você vai pagar duas vezes — uma lá e uma aqui. Aqui você paga certo uma vez."',
+    ],
+    tips: [
+      'Nunca fale mal da concorrência — isso volta contra você.',
+      'Mostre diferenciais concretos: equipamento, certificação, protocolo exclusivo, pós-atendimento.',
+      'Tenha cases de resultado prontos para mostrar.',
+    ]
+  },
+  {
+    id: 3,
+    category: 'preco',
+    tag: 'preco',
+    tagLabel: 'Preço',
+    objection: '"Vou esperar a próxima promoção."',
+    psychology: '<strong>O que está por trás:</strong> Falta de urgência real + hábito de procrastinar a decisão. O cliente está disposto a comprar, mas quer uma "justificativa" emocional para agir. Crie urgência verdadeira.',
+    scripts: [
+      '"Eu entendo, todo mundo gosta de um bom momento. Mas me deixa te contar uma coisa: cada mês que você adia, [problema] avança. A promoção pode vir — mas o resultado começa quando você começa."',
+      '"Temos um benefício especial para quem fecha hoje: [bônus/sessão extra/desconto pontual]. Esse benefício não é o preço base — é um presente por você tomar essa decisão agora."',
+      '"Posso te avisar quando tiver promoção — mas não posso garantir que você terá horário disponível. Quer reservar uma data e a gente ajusta o pagamento?"',
+    ],
+    tips: [
+      'Crie escassez real: vagas limitadas por semana, agenda lotada.',
+      'Ofereça bônus em vez de desconto — preserva o preço e o valor percebido.',
+      'Pergunte quando ela vai querer o resultado — e calcule quando precisaria começar.',
+    ]
+  },
+
+  // ——— MEDO / DOR ———
+  {
+    id: 4,
+    category: 'medo',
+    tag: 'medo',
+    tagLabel: 'Medo / Dor',
+    objection: '"Tenho medo de doer."',
+    psychology: '<strong>O que está por trás:</strong> Medo do desconhecido + experiências ruins anteriores. O cliente quer segurança emocional antes de qualquer coisa. Valide o medo e então desmistifique com informação concreta.',
+    scripts: [
+      '"Faz todo o sentido você ter esse medo — muita gente chega aqui assim. Posso te contar exatamente o que acontece durante o procedimento, passo a passo? Assim você não tem nenhuma surpresa."',
+      '"Esse procedimento tem [nível de sensação] — a maioria dos nossos clientes descreve como [formigamento leve / pressão / calor suave]. Muitos adormecem durante. Posso mostrar depoimentos de clientes que tinham o mesmo medo que você?"',
+      '"E se você sentir desconforto acima do que esperava, você me avisa e a gente ajusta na hora. Você tem controle total. Nunca faço nada contra a vontade do cliente."',
+    ],
+    tips: [
+      'Nunca diga "não dói nada" — isso quebra confiança se doer um pouco.',
+      'Seja honesto sobre a sensação e então normalize: "a maioria acha suportável".',
+      'Mostre antes e depois de clientes que tinham esse medo.',
+    ]
+  },
+  {
+    id: 5,
+    category: 'medo',
+    tag: 'medo',
+    tagLabel: 'Medo / Dor',
+    objection: '"Tenho medo de ficar com marcas ou efeitos colaterais."',
+    psychology: '<strong>O que está por trás:</strong> O cliente leu algo negativo online ou conhece alguém que teve problema. Medo de parecer "artificial" ou danificar a aparência. Precisa de segurança técnica + prova social.',
+    scripts: [
+      '"Esse medo é muito comum e super válido. Por isso mesmo é tão importante fazer com profissional certificado e equipamento adequado. Posso te mostrar nossa formação e certificação?"',
+      '"Os efeitos esperados são [vermelhidão leve / inchaço passageiro] que somem em [prazo]. Efeitos graves são raríssimos e acontecem principalmente em clínicas não especializadas. Aqui seguimos o protocolo [nome/marca] à risca."',
+      '"Temos [X] procedimentos realizados sem nenhuma intercorrência grave. Se quiser, posso te conectar com uma cliente que realizou recentemente para você tirar suas dúvidas direto com ela."',
+    ],
+    tips: [
+      'Tenha portfólio de resultados reais — antes e depois com consentimento.',
+      'Mostre certificações visíveis na clínica e no digital.',
+      'Ofereça sessão de avaliação gratuita para construir confiança antes de vender.',
+    ]
+  },
+  {
+    id: 6,
+    category: 'medo',
+    tag: 'medo',
+    tagLabel: 'Medo / Dor',
+    objection: '"Meu marido / família não aprova."',
+    psychology: '<strong>O que está por trás:</strong> Pressão social + insegurança própria. O cliente quer o procedimento mas precisa de "permissão". Ajude-a a se apropriar da própria decisão.',
+    scripts: [
+      '"Entendo, é importante ter apoio em casa. Mas me conta: isso é para você ou para ele? Cuidar de si mesma é um ato de amor próprio, não de vaidade. Como você se sentiria se ficasse com os resultados que você quer?"',
+      '"Muitas clientes passaram por isso. O que percebi é que, depois que veem o resultado, a família apoia muito. Às vezes o medo é do processo, não do resultado. Que tal você fazer uma sessão e ver como se sente?"',
+      '"Posso enviar material explicativo sobre o procedimento para você mostrar para ele? Às vezes a falta de informação gera resistência, e um conteúdo técnico muda a conversa em casa."',
+    ],
+    tips: [
+      'Nunca pressione contra a família — crie aliança.',
+      'Ofereça materiais educativos que a cliente pode usar em casa.',
+      'Foque no sentimento que o resultado vai gerar nela, não no procedimento em si.',
+    ]
+  },
+
+  // ——— TEMPO ———
+  {
+    id: 7,
+    category: 'tempo',
+    tag: 'tempo',
+    tagLabel: 'Tempo',
+    objection: '"Não tenho tempo para fazer sessões toda semana."',
+    psychology: '<strong>O que está por trás:</strong> Rotina sobrecarregada + percepção de que o tratamento é trabalhoso. O cliente subestima a flexibilidade e superestima o esforço necessário.',
+    scripts: [
+      '"Boa notícia: esse protocolo é [X sessões / quinzenal / mensal]. A maioria dos clientes encaixa em 50 minutos antes ou depois do trabalho. Qual é o horário mais difícil de você cobrir na sua semana?"',
+      '"Vamos fazer assim: você me diz os dois melhores horários da sua semana, e eu já garanto a agenda para os próximos [meses]. Você não precisa remarcar toda hora — tá tudo garantido."',
+      '"Entendo que o tempo é precioso. Mas pensa assim: cada sessão é [X min]. Você gastaria mais tempo resolvendo [o problema que queremos tratar] sem tratamento. A gente resolve em [prazo], uma vez por [frequência]."',
+    ],
+    tips: [
+      'Tenha horários flexíveis reais: manhã cedo, noite, sábado.',
+      'Ofereça agendamento de pacote completo de uma vez — reduz fricção.',
+      'Mostre o cronograma visual do tratamento para desmistificar a duração.',
+    ]
+  },
+  {
+    id: 8,
+    category: 'tempo',
+    tag: 'tempo',
+    tagLabel: 'Tempo',
+    objection: '"Estou esperando um momento melhor para começar."',
+    psychology: '<strong>O que está por trás:</strong> Procrastinação disfarçada de planejamento. O "momento certo" raramente chega. O cliente precisa entender que o custo de esperar é maior que o custo de começar.',
+    scripts: [
+      '"Posso te perguntar: o que precisaria acontecer para você considerar que é o momento certo? Às vezes a gente espera o momento que nunca vem enquanto o problema avança."',
+      '"Pensa comigo: se você começar hoje, em [prazo] você já vai estar com [resultado X]. Se esperar mais [tempo], esse resultado fica mais longe — e o tratamento pode ser mais longo. O melhor momento para cuidar de você é agora."',
+      '"Entendo. Que tal agendar para [data específica no futuro próximo]? Assim você já garante a vaga sem pressão de começar amanhã, e eu te ajudo a organizar."',
+    ],
+    tips: [
+      'Crie urgência com base no tempo para o resultado, não em promoções falsas.',
+      'Pergunte quando ela quer o resultado — e calcule o prazo de início necessário.',
+      'Use estações / eventos: verão, casamento, formatura como âncoras de motivação.',
+    ]
+  },
+
+  // ——— DÚVIDA / DESCONFIANÇA ———
+  {
+    id: 9,
+    category: 'duvida',
+    tag: 'duvida',
+    tagLabel: 'Dúvida',
+    objection: '"Preciso pensar melhor. Vou pesquisar mais antes de decidir."',
+    psychology: '<strong>O que está por trás:</strong> Falta de confiança na decisão. O cliente não tem informação suficiente OU tem informação demais. Pode ser também que ainda não esteja convencida do problema — reancoragem necessária.',
+    scripts: [
+      '"Claro, faz bem pesquisar! O que específico você ainda quer entender melhor? Posso te responder agora, mandar material ou indicar fontes confiáveis — assim você tem tudo o que precisa para decidir com segurança."',
+      '"Só uma coisa: o que falta para você tomar essa decisão hoje? Se for sobre o procedimento, posso esclarecer. Se for sobre o valor, posso te ajudar a viabilizar. Não quero que você saia sem ter resolvido o que trouxe você aqui."',
+      '"Entendo que é uma decisão importante. Para te ajudar a pesquisar: aqui está nosso Instagram com resultados reais, nosso Google com avaliações e meu contato direto. Se tiver qualquer dúvida depois, me chama — a vaga de [data próxima] está reservada por [24h/48h] para você."',
+    ],
+    tips: [
+      'Descubra qual é a dúvida real — não deixe ela sair sem saber o motivo.',
+      'Crie escassez suave: "posso segurar a agenda por 24h".',
+      'Envie material de qualidade após a consulta: depoimentos, explicação do procedimento.',
+    ]
+  },
+  {
+    id: 10,
+    category: 'duvida',
+    tag: 'duvida',
+    tagLabel: 'Dúvida',
+    objection: '"Não sei se confio nesse tipo de tratamento. Pode ser perigoso?"',
+    psychology: '<strong>O que está por trás:</strong> Exposição a informação negativa ou de má qualidade. O cliente não distingue profissional habilitado de não habilitado. Eduque antes de vender.',
+    scripts: [
+      '"Essa preocupação é muito legítima — e é exatamente por isso que você deve pesquisar o profissional, não só o procedimento. Me permite te contar sobre minha formação e registro profissional?"',
+      '"O risco existe quando feito por quem não tem qualificação. Aqui usamos [equipamento/produto certificado pela ANVISA], sigo o protocolo [nome] e tenho [certificação/curso]. Posso te mostrar tudo isso."',
+      '"Você quer fazer uma consulta de avaliação sem compromisso? Assim você me conhece, vê a estrutura da clínica e tira todas as dúvidas antes de qualquer decisão."',
+    ],
+    tips: [
+      'Tenha diplomas, certificações e registro visíveis.',
+      'Mostre registros no Conselho profissional (CRF, CRM, etc.) quando aplicável.',
+      'Ofereça consulta gratuita de avaliação — reduz barreira de entrada.',
+    ]
+  },
+  {
+    id: 11,
+    category: 'duvida',
+    tag: 'duvida',
+    tagLabel: 'Dúvida',
+    objection: '"Já fiz em outro lugar e não funcionou."',
+    psychology: '<strong>O que está por trás:</strong> Experiência frustrada anterior. Alta resistência e descrença. Precisa de empatia genuína + diagnóstico diferencial antes de qualquer promessa.',
+    scripts: [
+      '"Que frustração, sinto muito por isso. Me conta mais: o que foi feito, com que frequência? Muitas vezes o resultado não vem por protocolo errado, equipamento inadequado ou número insuficiente de sessões — não porque o tratamento não funciona."',
+      '"Entendo a sua descrença — você tem todo o direito. Por isso, quero ser honesta com você sobre o que é possível esperar aqui, o que eu faria diferente e qual seria o resultado realista. Posso avaliar seu caso e te dar uma opinião técnica sem compromisso?"',
+      '"Vamos fazer assim: posso te oferecer uma sessão de avaliação onde eu mostro exatamente o plano que eu faria e o porquê seria diferente. Se não fizer sentido para você, tudo bem. Mas quero que você tenha outra referência antes de desistir."',
+    ],
+    tips: [
+      'Nunca prometa resultados miraculosos após má experiência — isso quebra confiança.',
+      'Faça uma anamnese real da experiência anterior.',
+      'Ofereça avaliação gratuita antes de vender qualquer pacote.',
+    ]
+  },
+
+  // ——— COMPARAÇÃO ———
+  {
+    id: 12,
+    category: 'comparacao',
+    tag: 'comparacao',
+    tagLabel: 'Comparação',
+    objection: '"Vi no TikTok / Instagram que tem produto que faz a mesma coisa em casa."',
+    psychology: '<strong>O que está por trás:</strong> Influência de conteúdo de baixa qualidade + desejo de solução fácil e barata. O cliente compara produto de prateleira com procedimento clínico. Eduque com leveza.',
+    scripts: [
+      '"Adoro que você pesquisa! Posso te contar a diferença técnica? Produto de prateleira tem concentração X enquanto o que usamos aqui tem concentração Y — não é possível vender no varejo por questão de segurança. São universos diferentes de resultado."',
+      '"Muitas clientes chegam aqui depois de tentar por conta própria e não ter resultado. Não é por falta de dedicação — é porque para o problema que você tem, a tecnologia/ativo que usamos aqui não tem equivalente doméstico."',
+      '"Esses conteúdos são ótimos para conscientizar, mas raramente mostram o follow-up de 6 meses. Posso te mostrar resultados de clientes reais com acompanhamento completo?"',
+    ],
+    tips: [
+      'Nunca deprecie o produto que ela viu — eduque com curiosidade.',
+      'Explique as diferenças técnicas de forma acessível, não arrogante.',
+      'Use prova social de resultados de longo prazo.',
+    ]
+  },
+  {
+    id: 13,
+    category: 'comparacao',
+    tag: 'comparacao',
+    tagLabel: 'Comparação',
+    objection: '"Minha amiga faz em outro lugar e está adorando."',
+    psychology: '<strong>O que está por trás:</strong> Prova social funcionando contra você. O cliente tem referência positiva de outro lugar. Em vez de competir, alinhe e diferencie.',
+    scripts: [
+      '"Que ótimo que ela está tendo bons resultados! Me conta mais: o que ela faz lá? Estou perguntando porque cada perfil de pele / queixa responde melhor a protocolos diferentes. O que funciona para ela pode não ser o ideal para você — e vice-versa."',
+      '"Que bom que você tem uma referência próxima! Posso te perguntar o que te fez buscar uma segunda opinião, se ela está indo bem? Às vezes o que buscamos é levemente diferente, e vale avaliar o que faz mais sentido para a sua queixa específica."',
+      '"Poderia ser ótimo para você também ir lá e comparar! O mais importante é você encontrar onde se sente segura e bem atendida. Posso te mostrar o que fazemos aqui para você ter critérios de comparação?"',
+    ],
+    tips: [
+      'Nunca ataque a concorrência quando o cliente cita alguém próximo.',
+      'Mostre seu diferencial sem comparar diretamente.',
+      'Foque na necessidade específica dela, não na experiência da amiga.',
+    ]
+  },
+
+  // ——— RESULTADO ———
+  {
+    id: 14,
+    category: 'resultado',
+    tag: 'resultado',
+    tagLabel: 'Resultado',
+    objection: '"Quanto tempo leva para ver resultado? Não quero esperar meses."',
+    psychology: '<strong>O que está por trás:</strong> Expectativa de resultado imediato + impaciência cultural. O cliente teme investir e não ver retorno. Mostre o cronograma de resultados com clareza.',
+    scripts: [
+      '"Ótima pergunta — e quero ser totalmente honesta com você. Os primeiros sinais aparecem em [prazo real]. O resultado completo em [prazo]. Mas olha o que acontece na primeira sessão: [resultado imediato possível]."',
+      '"Vou te mostrar uma linha do tempo de uma cliente com o mesmo perfil que o seu. [Mostra o cronograma visual.] Assim você sabe exatamente o que esperar e quando."',
+      '"O que você quer evitar é o que acontece com quem desiste antes da hora — investe metade do tratamento, não vê o resultado final e acha que não funcionou. Comigo você tem acompanhamento em cada etapa."',
+    ],
+    tips: [
+      'Tenha um cronograma visual de resultados por protocolo.',
+      'Sempre ofereça um "resultado de sessão" imediato, mesmo que pequeno.',
+      'Use fotos de progresso de clientes reais com linha do tempo.',
+    ]
+  },
+  {
+    id: 15,
+    category: 'resultado',
+    tag: 'resultado',
+    tagLabel: 'Resultado',
+    objection: '"Tenho medo de fazer e não funcionar para mim."',
+    psychology: '<strong>O que está por trás:</strong> Medo de desperdício de dinheiro + baixa autoestima (sensação de que "para mim nunca funciona"). Precisa de empatia + personalização da proposta.',
+    scripts: [
+      '"Esse medo é muito comum e eu entendo. Por isso faço uma avaliação completa antes de indicar qualquer coisa. Não vendo o que não vai funcionar — prefiro te dizer que não é indicado do que te vender algo sem resultado."',
+      '"Posso te mostrar casos similares ao seu? Não resultados perfeitos de influencer — casos reais de pessoas com a mesma queixa, biótipo e expectativa que a sua."',
+      '"Vamos estabelecer uma meta realista juntas. Se em [X sessões] você não perceber nenhuma melhora, eu revejo o protocolo sem custo. Quero que você tenha resultado — não só que você pague."',
+    ],
+    tips: [
+      'Seja honesta sobre indicações — vender o que não serve gera cancelamento e chargeback.',
+      'Personalize a proposta com o nome e caso específico da cliente.',
+      'Ofereça garantia de resultado ou revisão de protocolo sem custo adicional.',
+    ]
+  },
+  {
+    id: 16,
+    category: 'resultado',
+    tag: 'resultado',
+    tagLabel: 'Resultado',
+    objection: '"Não quero ficar com aparência artificial ou exagerada."',
+    psychology: '<strong>O que está por trás:</strong> Medo de ser estigmatizada socialmente + referências visuais negativas de resultados mal feitos. O cliente quer melhora, não transformação radical.',
+    scripts: [
+      '"Isso é exatamente o que eu priorizo. O meu objetivo nunca é criar um novo rosto — é revelar o melhor do seu. Posso te mostrar resultados do meu trabalho onde as pessoas dizem que a pessoa está bonita mas ninguém sabe o que mudou?"',
+      '"O resultado artificial acontece quando se exagera ou quando se usa técnica errada para o perfil da pessoa. Na avaliação, eu defino o que é adequado para você — e você tem poder de veto em cada etapa."',
+      '"Me mostra uma referência do que você acha natural e bonito. Trabalho sempre com base no que você quer, não no que eu acho que você precisa."',
+    ],
+    tips: [
+      'Mostre portfólio de resultados naturais, não apenas dramaticos.',
+      'Peça referências visuais antes de propor qualquer procedimento.',
+      'Explique cada passo do que vai ser feito com fotos e validação da cliente.',
+    ]
+  },
+];
+
+let currentCategory = 'all';
+let currentSearch = '';
+
+function tagClass(tag) {
+  const map = { preco: 'tag-preco', medo: 'tag-medo', tempo: 'tag-tempo', duvida: 'tag-duvida', comparacao: 'tag-comparacao', resultado: 'tag-resultado' };
+  return map[tag] || 'tag-duvida';
+}
+
+function render() {
+  const grid = document.getElementById('cardsGrid');
+  const empty = document.getElementById('emptyState');
+  const count = document.getElementById('statsCount');
+  const q = currentSearch.toLowerCase().trim();
+
+  const filtered = OBJECTIONS.filter(o => {
+    const matchCat = currentCategory === 'all' || o.category === currentCategory;
+    const matchSearch = !q || o.objection.toLowerCase().includes(q) || o.psychology.toLowerCase().includes(q) || o.scripts.join(' ').toLowerCase().includes(q);
+    return matchCat && matchSearch;
+  });
+
+  count.textContent = filtered.length;
+  grid.innerHTML = '';
+
+  if (filtered.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  filtered.forEach((o, i) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.animationDelay = (i * 0.06) + 's';
+
+    const scriptsHTML = o.scripts.map((s, idx) =>
+      `<div class="script-item"><span class="script-num">${idx + 1}</span>${s}</div>`
+    ).join('');
+
+    const tipsHTML = o.tips.map(t =>
+      `<div class="tip-item"><div class="tip-dot"></div><span>${t}</span></div>`
+    ).join('');
+
+    div.innerHTML = `
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <span class="card-tag ${tagClass(o.tag)}">${o.tagLabel}</span>
+        <div class="card-objection">${o.objection}</div>
+        <div class="card-chevron">▾</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <div class="section-label">Psicologia da Objeção</div>
+          <div class="psychology-box">${o.psychology}</div>
+          <div class="section-label">Scripts de Resposta</div>
+          <div class="scripts-list">${scriptsHTML}</div>
+          <div class="section-label">Dicas Práticas</div>
+          <div class="tips-grid">${tipsHTML}</div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function toggleCard(card) {
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+function filterCards() {
+  currentSearch = document.getElementById('searchInput').value;
+  render();
+}
+
+function setCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
